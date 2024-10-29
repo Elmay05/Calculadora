@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calculadora</title>
+    <style>
+      #wrapper {
+        background-color: #ffffff;
+        width: 960px;
+        border: 5px solid #2583f2;
+        margin: 0 auto;
+      }
+
+      #digitos {
+        width: 960px;
+        margin: 0 auto;
+        border: 5px solid red;
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      .header {
+        text-align: center;
+      }
+
+      .boton {
+        padding: 40px;
+        font-size: 35px;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <h1>Calculadora</h1>
+        <p id="resultado">0</p>
+        <!-- Display para mostrar el resultado -->
+      </div>
+    </div>
+
+    <div id="digitos">
+      <button type="button" class="boton" onclick="appendNumber('1')">1</button>
+      <button type="button" class="boton" onclick="appendNumber('2')">2</button>
+      <button type="button" class="boton" onclick="appendNumber('3')">3</button>
+      <br />
+      <button type="button" class="boton" onclick="appendNumber('4')">4</button>
+      <button type="button" class="boton" onclick="appendNumber('5')">5</button>
+      <button type="button" class="boton" onclick="appendNumber('6')">6</button>
+      <br />
+      <button type="button" class="boton" onclick="appendNumber('7')">7</button>
+      <button type="button" class="boton" onclick="appendNumber('8')">8</button>
+      <button type="button" class="boton" onclick="appendNumber('9')">9</button>
+      <br />
+      <button type="button" class="boton" onclick="appendNumber('.')">.</button>
+      <button type="button" class="boton" onclick="appendNumber('0')">0</button>
+      <button type="button" class="boton" onclick="calculate()">=</button>
+      <br />
+      <button type="button" class="boton" onclick="setOperation('+')">+</button>
+      <button type="button" class="boton" onclick="setOperation('-')">-</button>
+      <button type="button" class="boton" onclick="setOperation('*')">*</button>
+      <button type="button" class="boton" onclick="setOperation('/')">/</button>
+      <button type="button" class="boton" onclick="clearDisplay()">C</button>
+    </div>
+
+    <script>
+      let currentNumber = "";
+      let previousNumber = "";
+      let operation = null;
+
+      function appendNumber(number) {
+        if (number === "." && currentNumber.includes(".")) return;
+        currentNumber += number;
+        updateDisplay();
+      }
+
+      function setOperation(op) {
+        if (currentNumber === "") return;
+        if (previousNumber !== "") {
+          calculate();
+        }
+        operation = op;
+        previousNumber = currentNumber;
+        currentNumber = "";
+      }
+
+      function calculate() {
+        let result;
+        const prev = parseFloat(previousNumber);
+        const current = parseFloat(currentNumber);
+        if (isNaN(prev) || isNaN(current)) return;
+
+        switch (operation) {
+          case "+":
+            result = prev + current;
+            break;
+          case "-":
+            result = prev - current;
+            break;
+          case "*":
+            result = prev * current;
+            break;
+          case "/":
+            result = prev / current;
+            break;
+          default:
+            return;
+        }
+        currentNumber = result;
+        operation = null;
+        previousNumber = "";
+        updateDisplay();
+      }
+
+      function clearDisplay() {
+        currentNumber = "";
+        previousNumber = "";
+        operation = null;
+        updateDisplay();
+      }
+
+      function updateDisplay() {
+        document.getElementById("resultado").innerText = currentNumber || "0";
+      }
+    </script>
+  </body>
+</html>
